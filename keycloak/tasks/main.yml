@@ -1,0 +1,6 @@
+---
+# tasks file for keycloak
+- include: pre-requisite.yml
+- include: services.yml
+- include: certificate.yml
+- include: change-configuration.yml

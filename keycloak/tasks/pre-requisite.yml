@@ -1,0 +1,53 @@
+---
+- name: install keycloak prerequisites
+  yum: name={{ item }} state=present
+  with_items:
+    - java-1.8.0-openjdk.x86_64
+
+- name: create keycloak user
+  user: name=keycloak
+
+- name: keycloak target directory
+  file: dest={{ keycloak_dir }}
+        mode=755
+        owner=root
+        group=root
+        state=directory
+
+- name: get Keycloak distribution tarball
+  get_url: url={{ keycloak_url }}
+           dest={{ keycloak_dir }}
+
+- name: unpack keycloak
+  unarchive: src={{ keycloak_dir }}/{{keycloak_archive}}
+             dest={{ keycloak_dir }}
+             copy=no
+
+- name: keycloak log directory
+  file: dest={{ keycloak_log_dir }}
+        mode=755
+        owner=keycloak
+        group=keycloak
+        state=directory
+
+- name: keycloak data directory
+  file: dest={{ keycloak_jboss_home }}/standalone/data
+        mode=755
+        owner=keycloak
+        group=keycloak
+        state=directory
+
+- name: keycloak tmp directory
+  file: dest={{ keycloak_jboss_home }}/standalone/tmp
+        mode=755
+        owner=keycloak
+        group=keycloak
+        state=directory
+
+- name: make keycloak configuration directory readable
+  file: dest={{ keycloak_jboss_home }}/standalone/configuration
+        mode=755
+        owner=keycloak
+        group=keycloak
+        state=directory
+        recurse=yes

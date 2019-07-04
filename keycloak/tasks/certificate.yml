@@ -1,0 +1,15 @@
+---
+- name: install packages required for generating certificate
+  yum: name={{ item }} state=present
+  with_items:
+    - unzip
+    - certbot
+
+- name: create certificates from lets encrypt using certbot
+  shell: 'certbot certonly -n --agree-tos --email rahulrb0509@gmail.com --webroot -w /usr/share/nginx/html -d keycloak.journalctl.org'
+
+# openssl pkcs12 -export -in fullchain.pem -inkey privkey.pem -out keycloak.pkcs12
+# keytool -importkeystore -deststorepass keycloak  -destkeystore keycloak.jks -srckeystore keycloak.pkcs12 -srcstoretype PKCS12
+# cp keycloak.jks /var/lib/keycloak/keycloak-6.0.1/standalone/configuration/
+# ./add-user-keycloak.sh --user admin
+# ./standalone.sh

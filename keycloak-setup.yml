@@ -1,0 +1,7 @@
+---
+- hosts: keycloak
+  sudo: yes
+  roles:
+    - keycloak
+
+

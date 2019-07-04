@@ -1,0 +1,25 @@
+---
+- name: install firewall and nginx
+  yum: name={{ item }} state=present
+  with_items:
+    - firewalld
+    - nginx
+
+- name: enable firewalld
+  service: enabled=yes
+           state=started
+           name=firewalld
+
+- name: Open Firewall for services
+  firewalld: port={{ item }}
+             permanent=true
+             state=enabled
+             immediate=yes
+  with_items:
+    - 80/tcp
+    - 443/tcp
+
+- name: enable nginx
+  service: enabled=yes
+           state=started
+           name=nginx
